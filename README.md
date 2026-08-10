@@ -83,3 +83,77 @@ def register():
     </form>
     </div>
     """)
+@app.route("/login", methods=["GET","POST"])
+def login():
+    if request.method == "POST":
+        c = db()
+        u = c.execute(
+            "SELECT * FROM users WHERE email=? AND password=?",
+            (request.form["email"],
+             request.form["password"])
+        ).fetchone()
+        c.close()
+        if u:
+            session["user"] = u[0]
+            return redirect("/")
+        return page("<div class='box'>Invalid login</div>")
+    return page("""
+    <div class="box">
+    <h2>Login</h2>
+    <form method="post">
+    <input name="email"
+           placeholder="Email"
+           required>
+    <input name="password"
+           type="password"
+           placeholder="Password"
+           required>
+    <button>Login</button>
+    </form>
+    </div>
+    """)
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect("/")
+@app.route("/add/<int:i>")
+def add(i):
+    q = session.get("cart", {})
+    q[str(i)] = q.get(str(i), 0) + 1
+    session["cart"] = q
+    return redirect("/cart")
+@app.route("/remove/<int:i>")
+def remove(i):
+    q = session.get("cart", {})
+    q.pop(str(i), None)
+    session["cart"] = q
+    return redirect("/cart")
+@app.route("/cart")
+def cart():
+    q = session.get("cart", {})
+    total = sum(
+        p[2] * q.get(str(p[0]), 0)
+        for p in P
+    )
+    items = ""
+    for p in P:
+        if q.get(str(p[0]), 0):
+            items += f"""
+            <div class="card">
+            <h3>{p[1]}</h3>
+            ₹{p[2]} × {q.get(str(p[0]),0)}
+            <a href="/remove/{p[0]}">
+            Remove
+            </a>
+            </div>
+            """
+    return page(f"""
+    <div class="box">
+    <h2>Cart</h2>
+    {items}
+    <h2>Total ₹{total}</h2>
+    <a class="btn" href="/checkout">
+    Payment
+    </a>
+    </div>
+    """)
