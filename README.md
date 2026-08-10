@@ -157,3 +157,78 @@ def cart():
     </a>
     </div>
     """)
+    @app.route("/checkout", methods=["GET","POST"])
+def checkout():
+    if "user" not in session:
+        return redirect("/login")
+    q = session.get("cart", {})
+    total = sum(
+        p[2] * q.get(str(p[0]), 0)
+        for p in P
+    )
+    if request.method == "POST":
+        c = db()
+        c.execute(
+            "INSERT INTO orders(user,total,payment) VALUES(?,?,?)",
+            (
+                session["user"],
+                total,
+                request.form["payment"]
+            )
+        )
+        c.commit()
+        c.close()
+        session["cart"] = {}
+        return page(f"""
+        <div class="box">
+        <h2>Payment Successful!</h2>
+        <h3>₹{total}</h3>
+        <p>
+        {request.form["payment"]} payment
+        </p>
+        </div>
+        """)
+    return page(f"""
+    <div class="box">
+    <h2>Payment ₹{total}</h2>
+    <form method="post">
+    <select name="payment">
+    <option>UPI</option>
+    <option>Card</option>
+    </select>
+    <input placeholder="UPI ID / Card Number">
+    <input placeholder="Expiry">
+    <input placeholder="CVV">
+    <button>Pay</button>
+    </form>
+    </div>
+    """)
+@app.route("/orders")
+def orders():
+    if "user" not in session:
+        return redirect("/login")
+    c = db()
+    rows = c.execute(
+        "SELECT * FROM orders WHERE user=?",
+        (session["user"],)
+    ).fetchall()
+    c.close()
+    items = ""
+    for r in rows:
+        items += f"""
+        <p>
+        Order #{r[0]} |
+        ₹{r[2]} |
+        {r[3]} |
+        Paid
+        </p>
+        """
+    return page(f"""
+    <div class="box">
+    <h2>My Orders</h2>
+    {items}
+    </div>
+    """)
+if __name__ == "__main__":
+    setup()
+    app.run(debug=True)
