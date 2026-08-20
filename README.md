@@ -42,3 +42,28 @@ if st.session_state.user is None:
             "New Password",
             type="password"
         )
+        confirm = st.text_input(
+            "Confirm Password",
+            type="password"
+        )
+        if st.button("Register"):
+            if password != confirm:
+                st.error("Passwords do not match")
+            else:
+                success, message = register(
+                    username,
+                    password
+                )
+                if success:
+                    st.success(message)
+                else:
+                    st.error(message)
+    st.stop()
+# SIDEBAR
+user = st.session_state.user
+st.sidebar.success(
+    f"Welcome {user['username']}"
+)
+st.sidebar.write(
+    f"Role: {user['role']}"
+)
