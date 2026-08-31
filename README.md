@@ -67,3 +67,28 @@ st.sidebar.success(
 st.sidebar.write(
     f"Role: {user['role']}"
 )
+pages = [
+    "Home",
+    "Photography Prints",
+    "Cart",
+    "My Orders"
+]
+if user["role"] == "admin":
+    pages.append("Admin Panel")
+page = st.sidebar.radio(
+    "Menu",
+    pages
+)
+if st.sidebar.button("Logout"):
+    st.session_state.user = None
+    st.session_state.cart = []
+    st.rerun()
+# HOME
+if page == "Home":
+    st.header(
+        "Welcome to Photography Print Store 📷"
+    )
+    st.write(
+        "Buy beautiful photography prints "
+        "for your home, office and gifts."
+    )
