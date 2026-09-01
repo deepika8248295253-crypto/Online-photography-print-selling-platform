@@ -18,3 +18,35 @@ def place_order(
     ))
     connection.commit()
     connection.close()
+    def get_orders(username=None):
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    if username:
+        cursor.execute("""
+            SELECT
+                id,
+                username,
+                product_name,
+                quantity,
+                total,
+                status
+            FROM orders
+            WHERE username=?
+            ORDER BY id DESC
+        """, (username,))
+    else:
+        cursor.execute("""
+            SELECT
+                id,
+                username,
+                product_name,
+                quantity,
+                total,
+                status
+            FROM orders
+            ORDER BY id DESC
+        """)
+    orders = cursor.fetchall()
+    connection.close()
+    return orders
