@@ -34,3 +34,11 @@ def add_product(
     ))
     connection.commit()
     connection.close()
+    def delete_product(product_id):
+    connection = get_connection()
+    connection.execute(
+        "DELETE FROM products WHERE id=?",
+        (product_id,)
+    )
+    connection.commit()
+    connection.close()
