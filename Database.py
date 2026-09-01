@@ -1,15 +1,10 @@
-def update_status(
-    order_id,
-    status
-):
+import sqlite3
+DATABASE = "photography.db"
+def get_connection():
+    return sqlite3.connect(
+        DATABASE,
+        check_same_thread=False
+    )
+def init_db():
     connection = get_connection()
-    connection.execute("""
-        UPDATE orders
-        SET status=?
-        WHERE id=?
-    """, (
-        status,
-        order_id
-    ))
-    connection.commit()
-    connection.close()
+    cursor = connection.cursor()
