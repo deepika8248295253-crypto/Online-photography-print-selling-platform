@@ -50,3 +50,28 @@ def init_db():
             "admin123",
             "admin"
         ))
+    cursor.execute(
+        "SELECT COUNT(*) FROM products"
+    )
+    count = cursor.fetchone()[0]
+    if count == 0:
+        products = [
+            (
+                "Sunset Beach",
+                "Beautiful sunset photography print",
+                499,
+                "https://images.unsplash.com/photo-1507525428034-b723cf961d3e"
+            ),
+            (
+                "Mountain View",
+                "Beautiful mountain photography print",
+                699,
+                "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b"
+            ),
+            (
+                "Forest Nature",
+                "Nature photography print",
+                599,
+                "https://images.unsplash.com/photo-1448375240586-882707db888b"
+            )
+        ]
