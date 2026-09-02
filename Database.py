@@ -75,3 +75,10 @@ def init_db():
                 "https://images.unsplash.com/photo-1448375240586-882707db888b"
             )
         ]
+        cursor.executemany("""
+            INSERT INTO products
+            (name, description, price, image_url)
+            VALUES (?, ?, ?, ?)
+        """, products)
+    connection.commit()
+    connection.close()
