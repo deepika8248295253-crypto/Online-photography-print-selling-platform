@@ -19,3 +19,15 @@ def register(username, password):
         return False, "Username already exists"
     finally:
         connection.close()
+        def login(username, password):
+    connection = get_connection()
+    cursor = connection.cursor()
+    cursor.execute("""
+        SELECT username, role
+        FROM users
+        WHERE username=?
+        AND password=?
+    """, (
+        username,
+        password
+    ))
