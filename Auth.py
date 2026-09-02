@@ -15,3 +15,7 @@ def register(username, password):
         ))
         connection.commit()
         return True, "Registration successful"
+        except:
+        return False, "Username already exists"
+    finally:
+        connection.close()
