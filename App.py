@@ -52,10 +52,13 @@ if st.session_state.user is None:
         "Admin: admin / admin123"
     )
     with register_tab:
+
     st.header("Create Account")
+
     username = st.text_input(
         "New Username"
     )
+
     password = st.text_input(
         "New Password",
         type="password"
