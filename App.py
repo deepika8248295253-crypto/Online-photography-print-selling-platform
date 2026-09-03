@@ -54,11 +54,9 @@ if st.session_state.user is None:
     with register_tab:
 
     st.header("Create Account")
-
     username = st.text_input(
         "New Username"
     )
-
     password = st.text_input(
         "New Password",
         type="password"
@@ -130,3 +128,28 @@ if page == "Home":
         "My Orders",
         len(orders)
     )
+elif page == "Photography Prints":
+    st.header(
+        "📷 Photography Prints"
+    )
+    products = get_products()
+    for product in products:
+        product_id = product[0]
+        name = product[1]
+        description = product[2]
+        price = product[3]
+        image = product[4]
+        with st.container(border=True):
+            col1, col2 = st.columns(2)
+            with col1:
+                if image:
+                    st.image(
+                        image,
+                        use_container_width=True
+                    )
+            with col2:
+                st.subheader(name)
+                st.write(description)
+                st.write(
+                    f"### ₹{price:,.2f}"
+                )
