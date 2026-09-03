@@ -8,3 +8,14 @@ st.set_page_config(
     page_icon="📷",
     layout="wide"
 )
+init_db()
+if "user" not in st.session_state:
+    st.session_state.user = None
+if "cart" not in st.session_state:
+    st.session_state.cart = []
+    st.title(
+    "📷 Online Photography Print Selling Platform"
+)
+st.caption(
+    "Python-only Photography Store"
+)
