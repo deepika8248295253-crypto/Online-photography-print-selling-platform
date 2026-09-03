@@ -31,3 +31,6 @@ def register(username, password):
         username,
         password
     ))
+user = cursor.fetchone()
+    connection.close()
+    return user
