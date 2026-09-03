@@ -82,3 +82,22 @@ if st.session_state.user is None:
             else:
                 st.error(message)
 st.stop()
+user = st.session_state.user
+st.sidebar.success(
+    f"Welcome {user['username']}"
+)
+st.sidebar.write(
+    f"Role: {user['role']}"
+)
+pages = [
+    "Home",
+    "Photography Prints",
+    "Cart",
+    "My Orders"
+]
+if user["role"] == "admin":
+ pages.append("Admin Panel")
+page = st.sidebar.radio(
+    "Menu",
+    pages
+)
