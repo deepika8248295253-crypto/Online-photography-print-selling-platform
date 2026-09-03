@@ -19,3 +19,35 @@ if "cart" not in st.session_state:
 st.caption(
     "Python-only Photography Store"
 )
+if st.session_state.user is None:
+    login_tab, register_tab = st.tabs(
+        ["Login", "Register"]
+    )
+    with login_tab:
+    st.header("User Login")
+    username = st.text_input("Username")
+    password = st.text_input(
+        "Password",
+        type="password"
+    )
+    if st.button("Login"):
+        user = login(
+            username,
+            password
+        )
+        if user:
+            st.session_state.user = {
+                "username": user[0],
+                "role": user[1]
+            }
+            st.success(
+                "Login successful!"
+            )
+            st.rerun()
+        else:
+            st.error(
+                "Invalid username or password"
+            )
+    st.info(
+        "Admin: admin / admin123"
+    )
