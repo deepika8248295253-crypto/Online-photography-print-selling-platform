@@ -101,3 +101,32 @@ page = st.sidebar.radio(
     "Menu",
     pages
 )
+if st.sidebar.button("Logout"):
+    st.session_state.user = None
+    st.session_state.cart = []
+    st.rerun()
+if page == "Home":
+    st.header(
+        "Welcome to Photography Print Store 📷"
+    )
+    st.write(
+        "Buy beautiful photography prints "
+        "for your home, office and gifts."
+    )
+    products = get_products()
+    orders = get_orders(
+        user["username"]
+    )
+    col1, col2, col3 = st.columns(3)
+    col1.metric(
+        "Products",
+        len(products)
+    )
+    col2.metric(
+        "Cart Items",
+        len(st.session_state.cart)
+    )
+    col3.metric(
+        "My Orders",
+        len(orders)
+    )
